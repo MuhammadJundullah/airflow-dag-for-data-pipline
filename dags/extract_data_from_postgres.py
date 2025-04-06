@@ -25,10 +25,8 @@ def extract_data_from_postgres():
     # output
     print(df)
 
-
-
 default_args = {
-    'owner' : 'rickichann',
+    'owner' : 'Ahmad',
     'start_date': datetime(2023,1,1),
     'retries': 1
 }
@@ -41,7 +39,6 @@ dag = DAG(
     max_active_runs = 1,
     catchup = False
 )
-
 
 extract_task = PythonOperator( 
     task_id = 'extract_data',

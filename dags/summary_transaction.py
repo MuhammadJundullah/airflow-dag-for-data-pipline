@@ -4,7 +4,6 @@ from airflow.providers.postgres.hooks.postgres import PostgresHook
 from datetime import datetime
 import pandas as pd
 
-
 def extract_data(ti):
 
     # Initialize the postgres hook
@@ -25,7 +24,6 @@ def extract_data(ti):
     # push to next func
     ti.xcom_push(key='transaction_data', value=df.to_json())
 
-
 def transform_data(ti):
     df_json = ti.xcom_pull(key='transaction_data', task_ids = 'extract_task')
     df = pd.read_json(df_json)
@@ -35,7 +33,6 @@ def transform_data(ti):
     dfg = dfg.groupby(by=['Country','StockCode','Description']).sum().reset_index()
 
     ti.xcom_push(key='transaction_groupby', value=dfg.to_json())
-
 
 def load_data(ti):
     df_json = ti.xcom_pull(key='transaction_groupby', task_ids='transform_task')
@@ -74,10 +71,8 @@ def load_data(ti):
         conn.close()
 
 
-
-
 default_args = {
-    'owner' : 'rickichann',
+    'owner' : 'Ahmad',
     'start_date': datetime(2023,1,1),
     'retries': 1
 }
